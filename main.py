@@ -64,16 +64,16 @@
 
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from huggingface_hub import InferenceClient
+from openai import OpenAI
 import base64
+import os
 
 app = Flask(__name__)
 CORS(app)
 
-import os
-client = InferenceClient(
-    api_key=os.environ.get("HF_API_KEY"),
-    timeout=60
+client = OpenAI(
+    base_url="https://router.huggingface.co/novita",
+    api_key=os.environ.get("HF_API_KEY")
 )
 
 SYSTEM_PROMPT = """You are a furniture expert assistant.
@@ -89,8 +89,7 @@ def analyze_furniture():
 
         if 'image' in request.files:
             image = request.files['image']
-            image_data = image.read()
-            b64 = base64.b64encode(image_data).decode()
+            b64 = base64.b64encode(image.read()).decode()
             messages_content.append({
                 "type": "image_url",
                 "image_url": {"url": f"data:image/jpeg;base64,{b64}"}
@@ -99,16 +98,16 @@ def analyze_furniture():
         text = request.form.get('text', '')
         messages_content.append({
             "type": "text",
-            "text": text if text else "Identify this furniture and give me key info."
+            "text": text if text else "Identify this furniture."
         })
 
         response = client.chat.completions.create(
-            model="microsoft/DialoGPT-medium", 
+            model="meta-llama/llama-3.2-11b-vision-instruct",
             messages=[
                 {"role": "system", "content": SYSTEM_PROMPT},
                 {"role": "user", "content": messages_content}
             ],
-            max_tokens=150
+            max_tokens=200
         )
 
         return jsonify({"success": True, "response": response.choices[0].message.content})
