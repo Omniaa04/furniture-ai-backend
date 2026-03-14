@@ -72,7 +72,7 @@ app = Flask(__name__)
 CORS(app)
 
 client = OpenAI(
-    base_url="https://router.huggingface.co/novita",
+    base_url="https://router.huggingface.co/together",
     api_key=os.environ.get("HF_API_KEY")
 )
 
@@ -102,7 +102,7 @@ def analyze_furniture():
         })
 
         response = client.chat.completions.create(
-            model="meta-llama/llama-3.2-11b-vision-instruct",
+            model="meta-llama/Llama-3.2-11B-Vision-Instruct-Turbo",
             messages=[
                 {"role": "system", "content": SYSTEM_PROMPT},
                 {"role": "user", "content": messages_content}
