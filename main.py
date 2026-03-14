@@ -103,7 +103,7 @@ def analyze_furniture():
         })
 
         response = client.chat.completions.create(
-            model="Qwen/Qwen2.5-VL-7B-Instruct",
+            model="meta-llama/Llama-3.2-11B-Vision-Instruct", 
             messages=[
                 {"role": "system", "content": SYSTEM_PROMPT},
                 {"role": "user", "content": messages_content}
