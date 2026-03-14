@@ -103,7 +103,7 @@ def analyze_furniture():
         })
 
         response = client.chat.completions.create(
-            model="HuggingFaceH4/zephyr-7b-beta", 
+            model="microsoft/DialoGPT-medium", 
             messages=[
                 {"role": "system", "content": SYSTEM_PROMPT},
                 {"role": "user", "content": messages_content}
