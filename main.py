@@ -70,8 +70,9 @@ import base64
 app = Flask(__name__)
 CORS(app)
 
+import os
 client = InferenceClient(
-    api_key="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",
+    api_key=os.environ.get("HF_API_KEY"),
     timeout=60
 )
 
