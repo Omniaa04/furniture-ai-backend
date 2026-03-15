@@ -155,9 +155,14 @@ def analyze_furniture():
         )
         
         data = response.json()
-        return jsonify({"success": True, "response": data["choices"][0]["message"]["content"]})
+        choices = data.get("choices", [])
+        if choices:
+            return jsonify({"success": True, "response": choices[0]["message"]["content"]})
+        else:
+            return jsonify({"success": False, "error": str(data)})
+        # return jsonify({"success": True, "response": data["choices"][0]["message"]["content"]})
 
-    except Exception as e:
+    except Exception as e:  
         return jsonify({"success": False, "error": str(e)})
 
 @app.route("/")
