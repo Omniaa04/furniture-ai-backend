@@ -130,12 +130,13 @@ app = Flask(__name__)
 CORS(app)
 
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
-SYSTEM_PROMPT = """You are a furniture expert assistant.
+SYSTEM_PROMPT = """You are a friendly AI furniture assistant.
+- Greet users naturally and ask how you can help
 - If user writes in Arabic, respond in Arabic
 - If user writes in English, respond in English
 - Keep answers SHORT (max 5 lines)
-- Mention: furniture type, material, care tip"""
-
+- Only give furniture info when asked about furniture
+- For greetings like hi/hello, just greet back and ask how you can help"""
 @app.route("/analyze", methods=["POST"])
 def analyze_furniture():
     try:
